@@ -48,14 +48,17 @@ export default function QuizzesPage() {
         const flat: Quiz[] = ([] as Quiz[]).concat(...quizzesByLesson);
         const dedup = new Map<string | number, Quiz>();
         flat.forEach((q) => {
-          const id = q.id || q._id;
-          if (id && !dedup.has(id)) {
+          const id = (q.id || q._id) as string | number | undefined;
+          if (id && (typeof id === 'string' || typeof id === 'number') && !dedup.has(id)) {
+            const language = typeof q.language === 'string' ? q.language :
+              typeof q.language_code === 'string' ? q.language_code :
+                'Unknown';
             dedup.set(id, {
               ...q,
               id,
               title: q.title || 'Untitled Quiz',
               description: q.description || '',
-              language: q.language || q.language_code || 'Unknown',
+              language,
               questions: Array.isArray(q.questions) ? q.questions.length : q.questions || 0,
             });
           }

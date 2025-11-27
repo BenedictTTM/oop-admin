@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,7 +24,7 @@ interface Student {
 
 type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
-export default function StudentsPage() {
+function StudentsContent() {
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
@@ -110,7 +110,7 @@ export default function StudentsPage() {
 
   const toggleAllStudents = () => {
     if (!filteredStudents) return;
-    
+
     const pendingStudents = filteredStudents.filter(s => s.status === 'pending');
     if (selectedStudents.size === pendingStudents.length) {
       setSelectedStudents(new Set());
@@ -144,14 +144,14 @@ export default function StudentsPage() {
       student.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.studentId?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesStatus = statusFilter === 'all' || student.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
   const pendingStudents = filteredStudents?.filter(s => s.status === 'pending') || [];
-  const hasPendingSelected = Array.from(selectedStudents).some(id => 
+  const hasPendingSelected = Array.from(selectedStudents).some(id =>
     pendingStudents.some(s => s.id === id)
   );
 
@@ -288,13 +288,12 @@ export default function StudentsPage() {
                       <div>
                         <p className="text-sm text-slate-400 mb-1">Status</p>
                         <span
-                          className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-                            student.status === 'approved'
-                              ? 'bg-green-500/20 text-green-500'
-                              : student.status === 'pending'
+                          className={`inline-block px-2 py-1 rounded text-xs font-medium ${student.status === 'approved'
+                            ? 'bg-green-500/20 text-green-500'
+                            : student.status === 'pending'
                               ? 'bg-yellow-500/20 text-yellow-500'
                               : 'bg-red-500/20 text-red-500'
-                          }`}
+                            }`}
                         >
                           {student.status}
                         </span>
@@ -349,5 +348,21 @@ export default function StudentsPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function StudentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Students</h1>
+          <p className="text-slate-400 mt-1">Manage and view all registered students</p>
+        </div>
+        <div className="text-center text-slate-400 py-12">Loading...</div>
+      </div>
+    }>
+      <StudentsContent />
+    </Suspense>
   );
 }
