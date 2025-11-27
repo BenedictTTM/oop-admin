@@ -98,7 +98,7 @@ export default function ActivityPage() {
       
       const response = await apiClient.get(`/api/admin/activities?${params.toString()}`);
       return response.data;
-    },
+    }
   });
 
   const { data: stats, isLoading: statsLoading } = useQuery<ActivityStats>({

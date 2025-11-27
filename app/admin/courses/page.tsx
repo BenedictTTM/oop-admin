@@ -107,7 +107,7 @@ export default function CoursesPage() {
                   >
                     <Button
                       variant="outline"
-                      className="w-full border-slate-700 text-slate-300 hover:bg-slate-800 flex items-center justify-center"
+                      className="w-full border-slate-700 text-slate-900 hover:bg-slate-300 flex items-center justify-center"
                     >
                       <Eye className="h-4 w-4 mr-2" />
                       View Materials

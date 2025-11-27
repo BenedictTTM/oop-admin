@@ -119,7 +119,7 @@ export default function QuizzesPage() {
                 <Link href={`/admin/quizzes/${String(quiz.id)}`} className="w-full">
                   <Button
                     variant="outline"
-                    className="w-full border-slate-700 text-slate-300 hover:bg-slate-800"
+                    className="w-full border-slate-700 text-slate-900 hover:bg-slate-300"
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     View Quiz
