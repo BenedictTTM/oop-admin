@@ -121,7 +121,7 @@ export default function AdminLoginPage() {
         </CardContent>
       </Card>
       <div className="absolute bottom-4 text-slate-500 text-sm">
-        Built by @Joe Acheampong
+        Built by @Joe
       </div>
     </div>
   );
