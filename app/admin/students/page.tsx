@@ -251,80 +251,82 @@ function StudentsContent() {
                   key={student.id}
                   className="p-4 rounded-lg bg-slate-800/50 border border-slate-800 hover:bg-slate-800 transition-colors"
                 >
-                  <div className="flex items-start gap-4">
-                    {student.status === 'pending' && (
-                      <button
-                        onClick={() => toggleStudentSelection(student.id)}
-                        className="flex items-center justify-center w-5 h-5 rounded border border-slate-600 hover:border-primary transition-colors mt-1"
-                      >
-                        {selectedStudents.has(student.id) ? (
-                          <CheckSquare className="w-4 h-4 text-primary" />
-                        ) : (
-                          <Square className="w-4 h-4 text-slate-400" />
-                        )}
-                      </button>
-                    )}
-                    {student.status !== 'pending' && <div className="w-5" />}
-
-                    <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div>
-                        <p className="text-sm text-slate-400 mb-1">Full Name</p>
-                        <p className="text-white font-medium">{student.fullName}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400 mb-1 flex items-center gap-1">
-                          <Mail className="h-3 w-3" />
-                          Email
-                        </p>
-                        <p className="text-white">{student.email}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400 mb-1 flex items-center gap-1">
-                          <GraduationCap className="h-3 w-3" />
-                          Student ID
-                        </p>
-                        <p className="text-white">{student.studentId || 'N/A'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-slate-400 mb-1">Status</p>
-                        <span
-                          className={`inline-block px-2 py-1 rounded text-xs font-medium ${student.status === 'approved'
-                            ? 'bg-green-500/20 text-green-500'
-                            : student.status === 'pending'
-                              ? 'bg-yellow-500/20 text-yellow-500'
-                              : 'bg-red-500/20 text-red-500'
-                            }`}
+                  <div className="flex flex-col md:flex-row items-start gap-4">
+                    <div className="flex flex-1 items-start gap-4 w-full">
+                      {student.status === 'pending' && (
+                        <button
+                          onClick={() => toggleStudentSelection(student.id)}
+                          className="flex items-center justify-center w-5 h-5 rounded border border-slate-600 hover:border-primary transition-colors mt-1 shrink-0"
                         >
-                          {student.status}
-                        </span>
-                      </div>
-                      {student.program && (
-                        <div>
-                          <p className="text-sm text-slate-400 mb-1">Program</p>
-                          <p className="text-white">{student.program}</p>
-                        </div>
+                          {selectedStudents.has(student.id) ? (
+                            <CheckSquare className="w-4 h-4 text-primary" />
+                          ) : (
+                            <Square className="w-4 h-4 text-slate-400" />
+                          )}
+                        </button>
                       )}
-                      {student.yearOfStudy && (
+                      {student.status !== 'pending' && <div className="w-5 shrink-0" />}
+
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
-                          <p className="text-sm text-slate-400 mb-1">Year of Study</p>
-                          <p className="text-white">{student.yearOfStudy}</p>
+                          <p className="text-sm text-slate-400 mb-1">Full Name</p>
+                          <p className="text-white font-medium">{student.fullName}</p>
                         </div>
-                      )}
-                      <div>
-                        <p className="text-sm text-slate-400 mb-1">Registered</p>
-                        <p className="text-white text-sm">
-                          {new Date(student.createdAt).toLocaleDateString()}
-                        </p>
+                        <div>
+                          <p className="text-sm text-slate-400 mb-1 flex items-center gap-1">
+                            <Mail className="h-3 w-3" />
+                            Email
+                          </p>
+                          <p className="text-white break-all">{student.email}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-400 mb-1 flex items-center gap-1">
+                            <GraduationCap className="h-3 w-3" />
+                            Student ID
+                          </p>
+                          <p className="text-white">{student.studentId || 'N/A'}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-400 mb-1">Status</p>
+                          <span
+                            className={`inline-block px-2 py-1 rounded text-xs font-medium ${student.status === 'approved'
+                              ? 'bg-green-500/20 text-green-500'
+                              : student.status === 'pending'
+                                ? 'bg-yellow-500/20 text-yellow-500'
+                                : 'bg-red-500/20 text-red-500'
+                              }`}
+                          >
+                            {student.status}
+                          </span>
+                        </div>
+                        {student.program && (
+                          <div>
+                            <p className="text-sm text-slate-400 mb-1">Program</p>
+                            <p className="text-white">{student.program}</p>
+                          </div>
+                        )}
+                        {student.yearOfStudy && (
+                          <div>
+                            <p className="text-sm text-slate-400 mb-1">Year of Study</p>
+                            <p className="text-white">{student.yearOfStudy}</p>
+                          </div>
+                        )}
+                        <div>
+                          <p className="text-sm text-slate-400 mb-1">Registered</p>
+                          <p className="text-white text-sm">
+                            {new Date(student.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
                     {student.status === 'pending' && (
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 w-full md:w-auto justify-end md:justify-start">
                         <Button
                           onClick={() => handleApprove(student.id)}
                           disabled={approveMutation.isPending}
                           size="sm"
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-green-600 hover:bg-green-700 flex-1 md:flex-none"
                         >
                           <CheckCircle2 className="w-4 h-4 mr-1" />
                           Approve
@@ -334,6 +336,7 @@ function StudentsContent() {
                           disabled={rejectMutation.isPending}
                           size="sm"
                           variant="destructive"
+                          className="flex-1 md:flex-none"
                         >
                           <XCircle className="w-4 h-4 mr-1" />
                           Reject
